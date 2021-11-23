@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Themees {
+  static String lang='ar';
+  static final arabic="ar";
+  static final english="en";
   static final lightTheme = ThemeData(
     backgroundColor: Colors.deepPurple,
     fontFamily: 'Janna',

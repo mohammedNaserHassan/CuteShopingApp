@@ -17,31 +17,7 @@ class MainPage extends StatelessWidget {
         builder: (get) => Scaffold(
               appBar: AppBar(
                 title: Text('Shopping App'),
-                actions: [
-                  IconButton(
-                    icon: Icon(LineIcons.moon,size: 30,color: Theme.of(context).backgroundColor,),
-                    onPressed: () {
-                      ThemeStorage().changeThemeMode();
-                      get.getHomeData();
-                    },
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.login_outlined,
-                        color: Theme.of(context).backgroundColor,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        // Helper.x.sharedPreferences.clear();
-                        Helper.x.sharedPreferences
-                            .clear()
-                            .then((value) => Get.offAll(FirstScreen()));
-                      },
-                    ),
-                  ),
-                ],
+                centerTitle: true,
               ),
               body: get.widgetOptions.elementAt(get.selectedIndex),
               bottomNavigationBar: Container(
@@ -87,8 +63,8 @@ class MainPage extends StatelessWidget {
                         ),
                         GButton(
                           iconColor: Theme.of(context).backgroundColor,
-                          icon: LineIcons.heart,
-                          text: 'Likes',
+                          icon: Icons.notifications,
+                          text: 'Notifications',
                           textStyle: Theme.of(context).textTheme.bodyText1,
                         ),
                         GButton(

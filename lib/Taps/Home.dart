@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
                   ),
                   GridView.count(
                     physics: BouncingScrollPhysics(),
-                    childAspectRatio: 1 / 1.53,
+                    childAspectRatio: 1 / 1.6,
                     shrinkWrap: true,
                     crossAxisCount: 2,
                     children: List.generate(
@@ -138,10 +138,18 @@ class Home extends StatelessWidget {
                                                 color: Colors.blue),
                                       ),
                                       Spacer(),
-                                      IconButton(
-                                          padding: EdgeInsets.zero,
-                                          onPressed: () {},
-                                          icon: Icon(Icons.favorite_border))
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: IconButton(
+                                            onPressed: () {
+                                              getx.getFavourites();
+                                              getx.changeFavourites(getx.products[index]['id']);
+
+                                            },
+                                            icon: Icon(Icons.favorite_border),
+                                          color: getx.favouries[getx.products[index]['id']]?Colors.red:Colors.grey,
+                                        ),
+                                      )
                                     ],
                                   )
                                 ],

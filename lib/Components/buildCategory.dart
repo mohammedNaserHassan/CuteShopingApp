@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 class buildCategory extends StatelessWidget {
   String name,image;
-   buildCategory({this.name,this.image});
+  Function function;
+   buildCategory({this.name,this.image,this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class buildCategory extends StatelessWidget {
           SizedBox(width: 40,)
           ,Text(name,style: Theme.of(context).textTheme.bodyText1,),
           Spacer(),
-          Icon(Icons.arrow_forward_ios)
+          IconButton(icon: Icon(Icons.arrow_forward_ios),onPressed: function,)
         ],
       ),
     );

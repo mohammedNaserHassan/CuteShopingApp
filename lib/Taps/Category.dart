@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shoping/Components/buildCategory.dart';
 import 'package:shoping/GetX/MyProvider.dart';
+import 'package:shoping/UI/CatrgoryDetails.dart';
 
 class Profile extends StatelessWidget {
   Profile();
@@ -21,6 +22,10 @@ class Profile extends StatelessWidget {
                     buildCategory(
                       name: getx.categories.data.data[index].name,
                       image: getx.categories.data.data[index].image,
+                      function: (){
+                        getx.getDetailsCategory(getx.categories.data.data[index].id);
+                        Get.to(CategoryDetails());
+                      },
                     ),
                     Divider(
                       height: 2,

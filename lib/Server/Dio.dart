@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shoping/GetX/getStorage.dart';
 
 class Dio_Helper {
   static Dio dio;
@@ -7,14 +8,14 @@ class Dio_Helper {
     dio = Dio(BaseOptions(
         baseUrl: 'https://student.valuxapps.com/api/',
         receiveDataWhenStatusError: true,
-        headers: {'Content-Type': 'application/json', 'lang': 'en'}));
+        headers: {'Content-Type': 'application/json', 'lang': ThemeStorage().getLanguage()}));
   }
 
   static Future<Response> getData(
-      {String url, Map<String, dynamic> query, String token}) async {
+      {String url, Map<String, dynamic> query, String token,}) async {
     dio.options.headers = {'Authorization': token??'',
     'Content-Type':'application/json',
-      'lang': 'en'
+      'lang': ThemeStorage().getLanguage()
     };
     return await dio.get(url, queryParameters: query);
   }
@@ -26,7 +27,7 @@ class Dio_Helper {
       String token}) async {
     dio.options.headers = {'Authorization': token??''
     ,  'Content-Type':'application/json',
-      'lang': 'en'
+      'lang': ThemeStorage().getLanguage()
     };
     return await dio.post(url, queryParameters: query, data: data);
   }

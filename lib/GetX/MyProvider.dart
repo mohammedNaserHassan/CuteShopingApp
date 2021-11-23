@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+
 import 'package:shoping/Model/Board.dart';
 import 'package:shoping/Model/Categories.dart';
-import 'package:shoping/Model/HomeModel.dart';
+import 'package:shoping/Model/ChangeFavourite.dart';
+import 'package:shoping/Model/FavouriteModel.dart';
 import 'package:shoping/Model/UserData.dart';
+import 'package:shoping/Model/UserModel.dart';
 import 'package:shoping/Server/Dio.dart';
 import 'package:shoping/Server/SharedPref.dart';
-import 'package:shoping/Taps/Favourite.dart';
+import 'package:shoping/Taps/Notifications.dart';
 import 'package:shoping/Taps/Home.dart';
 import 'package:shoping/Taps/Category.dart';
 import 'package:shoping/Taps/Settings.dart';
@@ -16,10 +19,6 @@ import 'package:shoping/UI/LoginScreen.dart';
 import 'package:shoping/UI/MainPage.dart';
 
 class MyProvider extends GetxController {
-  MyProvider() {
-    getHomeData();
-    getCategories();
-  }
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -29,8 +28,13 @@ class MyProvider extends GetxController {
 
   @override
   void onInit() {
+    print(token);
     getHomeData();
     getCategories();
+    getFavourites();
+    getSettings();
+    getNotifications();
+    getProfile();
   }
 
   List<Widget> widgetOptions = <Widget>[
@@ -150,16 +154,40 @@ class MyProvider extends GetxController {
 //   HomeModel homeModel;
   List<dynamic> banners;
   List<dynamic> products;
+  Map<int, bool> favouries = {};
 
   getHomeData() {
     Dio_Helper.getData(url: 'home', token: token).then((value) {
       //homeModel = HomeModel.fromJson(value.data);
       banners = value.data['data']['banners'];
       products = value.data['data']['products'];
+      value.data['data']['products'].forEach((element) {
+        favouries.addAll({element['id']: element['in_favorites']});
+      });
     });
   }
 
 //////////////////////////////////////////////////////////////////////
+
+  //////////////////////Change Favourite////////////////////
+  ChangeFavourite changeFavourite;
+
+  changeFavourites(int id) {
+    favouries[id] = !favouries[id];
+    update();
+    Dio_Helper.postData(
+            url: 'favorites', data: {'product_id': id}, token: token)
+        .then((value) => (value) {
+              changeFavourite = ChangeFavourite.fromJson(value.data);
+              if (!changeFavourite.status) {
+                favouries[id] = !favouries[id];
+              } else {
+                getFavourites();
+              }
+            });
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////
 
   ////////////////////Get All Categories////////////////////////////////////
   Categories categories;
@@ -170,7 +198,48 @@ class MyProvider extends GetxController {
   }
 
   //////////////////////////////////////////////////////////////////////
+  Categories details;
+getDetailsCategory(int id){
+    Dio_Helper.getData(url: 'categories/'+id.toString()).then((value){
+      details = Categories.fromJson(value.data);
+    });
+}
+  ////////////////////Get All Favourites////////////////////////////////////
+  FavouritesModel favouritesModel;
+  List<Map<String,dynamic>> favourotesL;
 
+  getFavourites() {
+    Dio_Helper.getData(url: 'favorites', token: token,).then(
+        (value){
+          favouritesModel = FavouritesModel.fromJson(value.data);
+
+        }
+    );
+  }
+
+  //////////////////////////////////////////////////////////////////////
+Map<dynamic,dynamic> settings;
+  getSettings(){
+  Dio_Helper.getData(url: 'settings',).then((value){
+    settings= value.data['data'];
+  });
+}
+////////////////////////////////////////////////////////////////////////////
+List<dynamic> notifications;
+
+getNotifications(){
+  Dio_Helper.getData(url: 'notifications',token: token).then((value){
+    notifications= value.data['data']['data'];
+  });
+}
+ShoppingModel shoppingModel;
+getProfile(){
+  Dio_Helper.getData(url: 'profile').then((value){
+    shoppingModel = ShoppingModel.fromJson(value.data);
+  });
+}
+
+  /////////////////////////////////////////////////////////
 ////important (print full text)///////
   printFull(String text) {
     final pattern = RegExp('.{1,800}');

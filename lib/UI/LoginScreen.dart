@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:shoping/Components/CustomButton.dart';
-
 import 'package:shoping/Components/CustomTextField.dart';
 import 'package:shoping/GetX/MyProvider.dart';
-import 'package:shoping/GetX/getStorage.dart';
-import 'package:shoping/UI/MainPage.dart';
 
 import 'RegisterScreen.dart';
 
